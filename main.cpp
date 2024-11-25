@@ -35,15 +35,19 @@ class Graph {
         }
 
         void printGraph() {
+            cout << "Graph's adjacency list:\n";
+
             for (int i = 0; i < adjList.size(); i++) {
+                cout << i << " --> ";
                 for (Pair v: adjList[i])
-                    cout << "(" << i << ", " << v.first << ", " << v.second << ") ";
+                    cout << "(" << v.first << ", " << v.second << ") ";
                 cout << endl;
             }
         }
 
         void BFS(int start)
         {
+            cout << "BFS starting from vertex " << start << "\n";
             vector<bool> visited(adjList.size(), false);
             queue<int> q {};
 
@@ -71,6 +75,8 @@ class Graph {
 
         void DFS(int start)
         {
+            cout << "DFS starting from vertex " << start << "\n";
+
             vector<bool> visited(adjList.size(), false);
             DFSUtil(start, visited);
             cout << '\n';
@@ -90,7 +96,6 @@ class Graph {
             }
         }
 };
-
 
 int main()
 {
