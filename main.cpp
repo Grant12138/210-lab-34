@@ -160,6 +160,57 @@ class Graph {
             cout << endl;
         }
 
+        void findMST() {
+            // Number of vertices in the graph
+            int N = adjList.size();
+
+            // Sort all edges in increasing order of their weight
+            vector<Edge> sortedEdges = edges;
+            sort(sortedEdges.begin(), sortedEdges.end(), [](Edge a, Edge b) {
+                return a.weight < b.weight;
+            });
+
+            // Disjoint Set Union (Union-Find) data structure
+            vector<int> parent(N);
+            for (int i = 0; i < N; i++)
+                parent[i] = i;
+
+            function<int(int)> find = [&](int u) {
+                if (parent[u] != u)
+                    parent[u] = find(parent[u]);
+                return parent[u];
+            };
+
+            auto unionSets = [&](int u, int v) {
+                parent[find(u)] = find(v);
+            };
+
+            vector<Edge> mstEdges;
+            int totalWeight = 0;
+
+            for (auto &edge : sortedEdges) {
+                int u = edge.src;
+                int v = edge.dest;
+
+                // Skip nodes not in cityNames (deleted nodes)
+                if (cityNames.find(u) == cityNames.end() || cityNames.find(v) == cityNames.end())
+                    continue;
+
+                if (find(u) != find(v)) {
+                    mstEdges.push_back(edge);
+                    totalWeight += edge.weight;
+                    unionSets(u, v);
+                }
+            }
+
+            // Output the MST edges and total weight
+            cout << "\nMinimum Spanning Tree (MST) edges:\n";
+            for (auto &edge : mstEdges) {
+                cout << cityNames[edge.src] << " - " << cityNames[edge.dest] << " : " << edge.weight << " km" << endl;
+            }
+            cout << "Total weight of MST: " << totalWeight << " km\n";
+        }
+
     private:
         void DFSUtil(int v, vector<bool> &visited)
         {
@@ -245,6 +296,8 @@ int main()
 
     // Find the shortest path
     graph.findShortestPath(src, dest);
+
+    graph.findMST();
 
     return 0;
 }
