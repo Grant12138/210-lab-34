@@ -99,6 +99,67 @@ class Graph {
             cout << '\n';
         }
 
+        void findShortestPath(int src, int dest)
+        {
+            // Number of vertices in the graph
+            int N = adjList.size();
+
+            // A mini-heap priority queue
+            priority_queue<Pair, vector<Pair>, greater<Pair>> minHeap {};
+
+            // Distance vector to store the shortest distance from src to i
+            vector<int> dist(N, INT_MAX);
+
+            // Parent vector to store the path
+            vector<int> parent(N, -1);
+
+            // Insert source vertex into the priority queue and initialize its distance to 0
+            minHeap.push(make_pair(0, src));
+            dist[src] = 0;
+
+            while (!minHeap.empty()) {
+                int u = minHeap.top().second;
+                minHeap.pop();
+
+                // Visit all adjacent vertices of u
+                for (auto &neighbor : adjList[u]) {
+                    int v = neighbor.first;
+                    int weight = neighbor.second;
+
+                    // Relaxation step
+                    if (dist[u] + weight < dist[v]) {
+                        dist[v] = dist[u] + weight;
+                        parent[v] = u;
+                        minHeap.push(make_pair(dist[v], v));
+                    }
+                }
+            }
+
+            // Output the shortest distance
+            if (dist[dest] == INT_MAX) {
+                cout << "There is no path between " << cityNames[src] << " and " << cityNames[dest] << "." << endl;
+                return;
+            }
+
+            cout << "\nThe shortest distance from " << cityNames[src] << " to " << cityNames[dest] << " is " << dist[dest] << " km." << endl;
+
+            // Reconstruct the shortest path
+            vector<int> path;
+            for (int v = dest; v != -1; v = parent[v])
+                path.push_back(v);
+
+            reverse(path.begin(), path.end());
+
+            // Output the path
+            cout << "Path: ";
+            for (size_t i = 0; i < path.size(); i++) {
+                cout << cityNames[path[i]];
+                if (i != path.size() - 1)
+                    cout << " -> ";
+            }
+            cout << endl;
+        }
+
     private:
         void DFSUtil(int v, vector<bool> &visited)
         {
@@ -160,6 +221,30 @@ int main()
 
     graph.DFS(0);
     graph.BFS(0);
+
+    // Ask user for source and destination cities
+    string srcCity, destCity;
+    cout << "\nEnter source city: ";
+    getline(cin, srcCity);
+    cout << "Enter destination city: ";
+    getline(cin, destCity);
+
+    // Find the node indices for the given city names
+    int src = -1, dest = -1;
+    for (auto &pair : cityNames) {
+        if (pair.second == srcCity)
+            src = pair.first;
+        if (pair.second == destCity)
+            dest = pair.first;
+    }
+
+    if (src == -1 || dest == -1) {
+        cout << "Invalid city name(s) entered." << endl;
+        return 1;
+    }
+
+    // Find the shortest path
+    graph.findShortestPath(src, dest);
 
     return 0;
 }
