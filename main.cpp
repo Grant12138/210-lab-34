@@ -24,6 +24,8 @@ class Graph {
 
         unordered_map<int, string> cityNames {};
 
+        unordered_map<string, int> cityIndices {};
+
         vector<Edge> edges {};
 
         // constructor
@@ -38,6 +40,9 @@ class Graph {
             adjList.resize(N);
             this->cityNames = cityNames;
             this->edges = edges;
+
+            for (auto &pair: cityNames)
+                cityIndices[pair.second] = pair.first;
 
             // add edges to the directed graph
             for (auto &edge: edges) {
@@ -234,9 +239,12 @@ class Graph {
         }
 };
 
+void print_id(string const& lab_desc);
 
 int main()
 {
+    print_id("Lab 34: Network Graph");
+
     vector<Edge> edges = {
             // Original edges with updated weights
             {0, 2, 9},
@@ -282,7 +290,7 @@ int main()
     {
         cout << "The City Network Visualization System Menu:\n";
         cout << "[1] Display the city network\n";
-        cout << "[2] Find the shortest path between two cities\n"
+        cout << "[2] Find the shortest path between two cities\n";
         cout << "[3] Display the MST\n";
         cout << "[4] Route Exploration (DFS)\n";
         cout << "[5] Network Expansion Exploration (BFS)\n";
@@ -345,5 +353,14 @@ int main()
     while (choice != 6);
 
     return 0;
+}
+
+void print_id(string const& lab_desc)
+{
+    cout << "\nCOMSC210 | Grant Luo | " << lab_desc << "\n";
+    cout << "Editor: CLion\n";
+    cout << "Compiler: Apple clang version 16.0.0\n";
+    cout << "File: " << __FILE__ << "\n";
+    cout << "Compiled: " << __DATE__ << " at " << __TIME__ << "\n\n";
 }
 
