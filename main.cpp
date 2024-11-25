@@ -2,6 +2,8 @@
 * COMSC-210 | Lab 34 | Grant Luo
 * Editor: CLion
 * Compiler: Apple clang version 16.0.0
+*
+* This program simulates the city network within a county
 */
 #include <iostream>
 #include <vector>
@@ -48,9 +50,15 @@ class Graph {
         }
 
         void printGraph() {
+            cout << "\tThe City Network\n";
+            cout << "================================\n";
+
             for (int i = 0; i < adjList.size(); i++) {
                 if (adjList[i].empty()) continue;
-                cout << "City " << cityNames[i] << ": "
+                cout << cityNames[i] << ": ";
+                for (Pair v : adjList[i])
+                    cout << "(" << cityNames[v.first] << ", " << v.second << " km) ";
+                cout << "\n";
             }
         }
 
