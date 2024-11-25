@@ -38,9 +38,8 @@ class Graph {
             cout << "Graph's adjacency list:\n";
 
             for (int i = 0; i < adjList.size(); i++) {
-                cout << i << " --> ";
                 for (Pair v: adjList[i])
-                    cout << "(" << v.first << ", " << v.second << ") ";
+                    cout << i << " --> (" << v.first << ", " << v.second << ") ";
                 cout << endl;
             }
         }
@@ -96,6 +95,7 @@ class Graph {
             }
         }
 };
+
 
 int main()
 {
