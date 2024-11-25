@@ -62,41 +62,50 @@ class Graph {
             }
         }
 
-        void BFS(int start)
-        {
-            cout << "BFS starting from vertex " << start << "\n";
+        void BFS(const string& startCity) {
+            auto it = cityIndices.find(startCity);
+            if (it == cityIndices.end()) {
+                cout << "City " << startCity << " does not exist in the graph." << endl;
+                return;
+            }
+
+            int start = it->second;
             vector<bool> visited(adjList.size(), false);
-            queue<int> q {};
+            queue<int> q;
 
             visited[start] = true;
             q.push(start);
 
-            while (!q.empty())
-            {
+            cout << "\nBFS traversal starting from " << startCity << ":\n";
+
+            while (!q.empty()) {
                 int v = q.front();
                 q.pop();
-                cout << v << " ";
+                cout << cityNames[v] << " ";
 
-                for (Pair &neighbor : adjList[v])
-                {
+                for (Pair &neighbor : adjList[v]) {
                     int u = neighbor.first;
-                    if (!visited[u])
-                    {
+                    if (!visited[u]) {
                         visited[u] = true;
                         q.push(u);
                     }
                 }
             }
-            cout << '\n';
+            cout << endl;
         }
 
-        void DFS(int start)
-        {
-            cout << "DFS starting from vertex " << start << "\n";
+        void DFS(const string& startCity) {
+            auto it = cityIndices.find(startCity);
+            if (it == cityIndices.end()) {
+                cout << "City " << startCity << " does not exist in the graph." << endl;
+                return;
+            }
 
+            int start = it->second;
             vector<bool> visited(adjList.size(), false);
+            cout << "\nDFS traversal starting from " << startCity << ":\n";
             DFSUtil(start, visited);
-            cout << '\n';
+            cout << endl;
         }
 
         void findShortestPath(int src, int dest)
@@ -212,16 +221,15 @@ class Graph {
         }
 
     private:
-        void DFSUtil(int v, vector<bool> &visited)
-        {
+        void DFSUtil(int v, vector<bool> &visited) {
             visited[v] = true;
-            cout << v << " ";
+            cout << cityNames[v] << " ";
 
-            for (Pair &neighbor : adjList[v])
-            {
+            for (Pair &neighbor : adjList[v]) {
                 int u = neighbor.first;
-                if (!visited[u])
+                if (!visited[u]) {
                     DFSUtil(u, visited);
+                }
             }
         }
 };
@@ -268,45 +276,73 @@ int main()
 
     // Creates graph
     Graph graph(edges, cityNames);
-    graph.printGraph();
 
-    graph.DFS(0);
-    graph.BFS(0);
-
-    while (true)
+    int choice;
+    do
     {
         cout << "The City Network Visualization System Menu:\n";
         cout << "[1] Display the city network\n";
-        cout << "[2] Route Exploration (DFS)\n";
-        cout << "[3] Network Expansion Exploration (BFS)\n";
-        cout << "[4]"
+        cout << "[2] Find the shortest path between two cities\n"
+        cout << "[3] Display the MST\n";
+        cout << "[4] Route Exploration (DFS)\n";
+        cout << "[5] Network Expansion Exploration (BFS)\n";
+        cout << "[6] Exit\n";
+        cout << "Enter your choice (1 - 6): ";
+
+        cin >> choice;
+        cin.ignore(1000, '\n');
+
+        switch (choice)
+        {
+            case 1:
+                graph.printGraph();
+                break;
+            case 2:
+            {
+                // Ask user for source and destination cities
+                string srcCity, destCity;
+                cout << "\nEnter source city: ";
+                getline(cin, srcCity);
+                cout << "Enter destination city: ";
+                getline(cin, destCity);
+
+                // Find the node indices for the given city names
+                int src = -1, dest = -1;
+                for (auto &pair : cityNames) {
+                    if (pair.second == srcCity)
+                        src = pair.first;
+                    if (pair.second == destCity)
+                        dest = pair.first;
+                }
+
+                graph.findShortestPath(src, dest);
+                break;
+            }
+            case 3:
+                graph.findMST();
+                break;
+            case 4:
+            {
+                string startCity;
+                cout << "Enter starting city for DFS: ";
+                getline(cin, startCity);
+                graph.DFS(startCity);
+                break;
+            }
+            case 5:
+            {
+                string startCity;
+                cout << "Enter starting city for BFS: ";
+                getline(cin, startCity);
+                graph.DFS(startCity);
+                break;
+            }
+            case 6:
+                cout << "Exiting the system.\n";
+                break;
+        }
     }
-
-    // Ask user for source and destination cities
-    string srcCity, destCity;
-    cout << "\nEnter source city: ";
-    getline(cin, srcCity);
-    cout << "Enter destination city: ";
-    getline(cin, destCity);
-
-    // Find the node indices for the given city names
-    int src = -1, dest = -1;
-    for (auto &pair : cityNames) {
-        if (pair.second == srcCity)
-            src = pair.first;
-        if (pair.second == destCity)
-            dest = pair.first;
-    }
-
-    if (src == -1 || dest == -1) {
-        cout << "Invalid city name(s) entered." << endl;
-        return 1;
-    }
-
-    // Find the shortest path
-    graph.findShortestPath(src, dest);
-
-    graph.findMST();
+    while (choice != 6);
 
     return 0;
 }
