@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{arrows, positioning}
+
+\begin{document}
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=2cm,
+    every node/.style={circle, draw, minimum size=1cm, font=\small, inner sep=2pt},
+    every edge/.style={draw, thick},
+    every label/.style={draw=none, font=\small},
+    >=stealth']
+
+% Define the positions of the nodes
+\node (A) at (0, 0) {City A};
+\node (B) at (2, 2) {City B};
+\node (C) at (4, 0) {City C};
+\node (F) at (0, -2) {City F};
+\node (G) at (4, -2) {City G};
+\node (D) at (2, 4) {City D};
+\node (E) at (6, 2) {City E};
+\node (H) at (8, 0) {City H};
+\node (K) at (6, 4) {City K};
+\node (J) at (4, 6) {City J};
+\node (I) at (6, 6) {City I};
+
+% Draw the edges with weights
+\path[every edge]
+    (A) edge node[above left] {9 km} (B)
+    (A) edge node[below] {22 km} (C)
+    (A) edge node[left] {15 km} (F)
+    (B) edge node[left] {7 km} (C)
+    (B) edge node[left] {5 km} (D)
+    (B) edge node[above right] {6 km} (E)
+    (B) edge node[left] {3 km} (J)
+    (C) edge node[right] {10 km} (G)
+    (C) edge node[above] {8 km} (K)
+    (D) edge node[left] {9 km} (I)
+    (D) edge node[below] {10 km} (E)
+    (E) edge node[right] {12 km} (H)
+    (F) edge node[below] {7 km} (G)
+    (G) edge node[below] {4 km} (H)
+    (H) edge node[right] {6 km} (K)
+    (K) edge node[right] {5 km} (J)
+    (J) edge node[right] {2 km} (I)
+    (B) edge node[left] {3 km} (11) % City J is node 11, already represented by (J)
+    (K) edge node[above] {8 km} (C)
+    (B) edge node[left] {3 km} (J)
+    (J) edge node[above] {5 km} (K)
+    (K) edge node[above right] {6 km} (H)
+    (I) edge node[right] {2 km} (J)
+    (B) edge node[left] {3 km} (J)
+    (J) edge node[right] {5 km} (K)
+    ;
+
+\end{tikzpicture}
+\end{center}
+
+\end{document}

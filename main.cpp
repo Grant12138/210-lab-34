@@ -273,6 +273,15 @@ int main()
     graph.DFS(0);
     graph.BFS(0);
 
+    while (true)
+    {
+        cout << "The City Network Visualization System Menu:\n";
+        cout << "[1] Display the city network\n";
+        cout << "[2] Route Exploration (DFS)\n";
+        cout << "[3] Network Expansion Exploration (BFS)\n";
+        cout << "[4]"
+    }
+
     // Ask user for source and destination cities
     string srcCity, destCity;
     cout << "\nEnter source city: ";
