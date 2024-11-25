@@ -100,16 +100,26 @@ class Graph {
 int main()
 {
     vector<Edge> edges = {
-            // (x, y, w) —> edge from x to y having weight w
-            {0, 1, 12},
-            {0, 2, 8},
-            {0, 3, 21},
-            {2, 3, 6},
-            {2, 6, 2},
-            {5, 6, 6},
-            {4, 5, 9},
-            {2, 4, 4},
-            {2, 5, 5}
+        // Original edges with updated weights
+        {0, 2, 9},
+        {0, 3, 22},
+        {2, 3, 7},
+        {2, 4, 5},
+        {2, 5, 6},
+        {4, 5, 10},
+
+        // New edges involving new nodes
+        {0, 7, 15},
+        {3, 8, 10},
+        {7, 8, 7},
+        {5, 9, 12},
+        {4, 10, 9},
+        {2, 11, 3},
+        {8, 9, 4},
+        {9, 12, 6},
+        {11, 12, 5},
+        {10, 11, 2},
+        {3, 12, 8}
     };
     // Creates graph
     Graph graph(edges);
