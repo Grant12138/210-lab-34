@@ -3,7 +3,8 @@
 * Editor: CLion
 * Compiler: Apple clang version 16.0.0
 */
-#include <iosteam>
+#include <iostream>
+#include <vector>
 using namespace std;
 
 struct Edge {
@@ -19,6 +20,7 @@ class Graph {
         // constructor
         Graph(vector<Edge> const &edges) {
             // resize the vector to hold SIZE elements of type vector<Edge>
+            int SIZE = edges.size();
             adjList.resize(SIZE);
             // add edges to the directed graph
             for (auto &edge: edges) {
@@ -36,11 +38,19 @@ class Graph {
                 cout << endl;
             }
         }
-}
+};
 
 vector<Edge> edges = {
         // (x, y, w) —> edge from x to y having weight w
-        {0,1,12},{0,2,8},{0,3,21},{2,3,6},{2,6,2},{5,6,6},{4,5,9},{2,4,4},{2,5,5}
+        {0,1,12},
+        {0,2,8},
+        {0,3,21},
+        {2,3,6},
+        {2,6,2},
+        {5,6,6},
+        {4,5,9},
+        {2,4,4},
+        {2,5,5}
 };
 
 int main()
