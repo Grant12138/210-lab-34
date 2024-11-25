@@ -19,11 +19,24 @@ class Graph {
     public:
         // a vector of vectors of Pairs to represent an adjacency list
         vector<vector<Pair>> adjList;
+
+        unordered_map<int, string> cityNames {};
+
+        vector<Edge> edges {};
+
         // constructor
-        Graph(vector<Edge> const &edges) {
-            // resize the vector to hold SIZE elements of type vector<Edge>
-            int SIZE = edges.size();
-            adjList.resize(SIZE);
+        Graph(vector<Edge> const &edges, unordered_map<int, string> cityNames) {
+            // Find the maximum numbered vertex
+            int N = 0;
+            for (auto &edge : edges)
+                N = max(N, max(edge.src, edge.dest));
+            N += 1;
+
+            // Resize the vector to hold SIZE elements of type vector<Edge>
+            adjList.resize(N);
+            this->cityNames = cityNames;
+            this->edges = edges;
+
             // add edges to the directed graph
             for (auto &edge: edges) {
                 int src = edge.src;
@@ -35,12 +48,9 @@ class Graph {
         }
 
         void printGraph() {
-            cout << "Graph's adjacency list:\n";
-
             for (int i = 0; i < adjList.size(); i++) {
-                for (Pair v: adjList[i])
-                    cout << i << " --> (" << v.first << ", " << v.second << ") ";
-                cout << endl;
+                if (adjList[i].empty()) continue;
+                cout << "City " << cityNames[i] << ": "
             }
         }
 
@@ -100,29 +110,44 @@ class Graph {
 int main()
 {
     vector<Edge> edges = {
-        // Original edges with updated weights
-        {0, 2, 9},
-        {0, 3, 22},
-        {2, 3, 7},
-        {2, 4, 5},
-        {2, 5, 6},
-        {4, 5, 10},
+            // Original edges with updated weights
+            {0, 2, 9},
+            {0, 3, 22},
+            {2, 3, 7},
+            {2, 4, 5},
+            {2, 5, 6},
+            {4, 5, 10},
 
-        // New edges involving new nodes
-        {0, 7, 15},
-        {3, 8, 10},
-        {7, 8, 7},
-        {5, 9, 12},
-        {4, 10, 9},
-        {2, 11, 3},
-        {8, 9, 4},
-        {9, 12, 6},
-        {11, 12, 5},
-        {10, 11, 2},
-        {3, 12, 8}
+            // New edges involving new nodes
+            {0, 7, 15},
+            {3, 8, 10},
+            {7, 8, 7},
+            {5, 9, 12},
+            {4, 10, 9},
+            {2, 11, 3},
+            {8, 9, 4},
+            {9, 12, 6},
+            {11, 12, 5},
+            {10, 11, 2},
+            {3, 12, 8}
     };
+
+    unordered_map<int, string> cityNames = {
+            {0, "City A"},
+            {2, "City B"},
+            {3, "City C"},
+            {4, "City D"},
+            {5, "City E"},
+            {7, "City F"},
+            {8, "City G"},
+            {9, "City H"},
+            {10, "City I"},
+            {11, "City J"},
+            {12, "City K"}
+    };
+
     // Creates graph
-    Graph graph(edges);
+    Graph graph(edges, cityNames);
     graph.printGraph();
 
     graph.DFS(0);
